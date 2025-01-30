@@ -1,0 +1,11 @@
+databaseChangeLog:
+        - include:
+                  file: 001-create-table-manager.sql
+        - include:
+                  file: 002-create-table-course.sql
+        - include:
+                  file: 003-create-table-section.sql
+        - include:
+                  file: 004-create-table-attendee.sql
+        - include:
+                  file: 005-create-table-attendance.sql

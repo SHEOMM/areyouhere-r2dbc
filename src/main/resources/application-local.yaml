@@ -1,0 +1,47 @@
+spring.config.activate.on-profile: local
+
+spring:
+  r2dbc:
+    url: jdbc:h2:tcp://localhost/~/areyouhere
+    name: sa
+    password:
+    pool:
+      initial-size: 5
+      max-size: 10
+      max-idle-time: 30m
+  liquibase:
+    change-log:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  mail:
+    host: null
+    port: 1
+    username: null
+    password: null
+    from: null
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope: email, profile
+            redirect-uri: https://localhost:8080/api/login/oauth2/code/google
+logging:
+  level:
+    root: debug
+
+cors:
+  allowed-origins: http://localhost:5173
+
+cookie:
+  encode: TEMP
