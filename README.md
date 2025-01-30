@@ -1,6 +1,5 @@
 # areyouhere-server
-이 프로젝트는 java로 작성한 https://github.com/wafflestudio/areyouhere-server?
-프로젝트의 리팩토링 및 kotlin 마이그레이션 프로젝트입니다.
+이 프로젝트는 java로 작성한 https://github.com/wafflestudio/areyouhere-server의 리팩토링 및 kotlin 마이그레이션 프로젝트입니다.
 
 기술스택: webflux, r2dbc, mysql, liquibase, redis
 
