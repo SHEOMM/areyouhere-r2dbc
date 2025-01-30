@@ -1,5 +1,5 @@
 -- liquibase formatted sql
--- changeset author: SHEOMM description: create table course
+-- changeset SHEOMM:002
 
 CREATE TABLE course (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -7,6 +7,8 @@ CREATE TABLE course (
     description TEXT NULL,
     allow_only_registered BOOLEAN NOT NULL,
     manager_id BIGINT NOT NULL,
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL
 );
 
-CREATE INDEX idx_course_manager_id ON course(manager_id);
+CREATE INDEX idx_course_manager_id ON course(manager_id, created_at);

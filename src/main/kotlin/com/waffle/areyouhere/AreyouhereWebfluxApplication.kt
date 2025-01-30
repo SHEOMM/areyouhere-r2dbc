@@ -1,4 +1,4 @@
-package com.waffle.areyouhere_webflux
+package com.waffle.areyouhere
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class AreyouhereWebfluxApplication
 
 fun main(args: Array<String>) {
-	runApplication<AreyouhereWebfluxApplication>(*args)
+    runApplication<AreyouhereWebfluxApplication>(*args)
 }

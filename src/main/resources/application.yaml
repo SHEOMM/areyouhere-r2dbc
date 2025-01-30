@@ -1,6 +1,6 @@
 spring:
   application:
-    name: areyouhere_webflux
+    name: areyouhere
   profiles:
     active: local
   config:

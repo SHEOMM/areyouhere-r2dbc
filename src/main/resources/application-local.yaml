@@ -2,15 +2,21 @@ spring.config.activate.on-profile: local
 
 spring:
   r2dbc:
-    url: jdbc:h2:tcp://localhost/~/areyouhere
-    name: sa
-    password:
+    url: r2dbc:h2:file://localhost/~/areyouhere
     pool:
       initial-size: 5
       max-size: 10
       max-idle-time: 30m
+    username: sa
+    password:
   liquibase:
-    change-log:
+    change-log: liquibase/database_changelog.yaml
+    url: jdbc:h2:file:~/areyouhere
+    user: sa
+    password:
+    driver-class-name: org.h2.Driver
+    enabled: true
+    drop-first: true
   data:
     redis:
       host: localhost

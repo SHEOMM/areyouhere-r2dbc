@@ -1,0 +1,11 @@
+databaseChangeLog:
+        - include:
+                  file: liquibase/001-create-table-manager.sql
+        - include:
+                  file: liquibase/002-create-table-course.sql
+        - include:
+                  file: liquibase/003-create-table-section.sql
+        - include:
+                  file: liquibase/004-create-table-attendee.sql
+        - include:
+                  file: liquibase/005-create-table-attendance.sql
