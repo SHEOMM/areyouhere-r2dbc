@@ -64,8 +64,8 @@ class ManagerController(
 
     @PutMapping
     suspend fun update(@RequestBody updateRequestDto: UpdateRequestDto, session: WebSession): ResponseEntity<HttpStatus> {
-        val manangerId = sessionManager.login().getManagerIdOrThrow(session)
-        managerFlowService.update(manangerId, updateRequestDto.nickname, updateRequestDto.password)
+        val managerId = sessionManager.login().getManagerIdOrThrow(session)
+        managerFlowService.update(managerId, updateRequestDto.nickname, updateRequestDto.password)
         return ResponseEntity.status(HttpStatus.OK)
             .build()
     }
