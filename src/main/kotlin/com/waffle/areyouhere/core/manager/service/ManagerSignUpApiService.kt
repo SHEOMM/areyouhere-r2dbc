@@ -19,7 +19,7 @@ class ManagerSignUpApiService(
             email = email,
             password = passwordEncoder.encode(password),
         )
-        managerService.create(manager)
+        managerService.save(manager)
         return manager.id!!
     }
 }

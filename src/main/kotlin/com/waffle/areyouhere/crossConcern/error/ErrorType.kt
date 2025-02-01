@@ -11,4 +11,5 @@ enum class ErrorType(
     DEFAULT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 0x0000, "API 호출에 실패하였습니다."),
     BAD_REQUEST(HttpStatus.BAD_REQUEST, 0x0001, "잘못된 요청입니다"),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 0x0003, "인증되지 않은 요청입니다."),
+    RESPONSE_CONFLICT(HttpStatus.CONFLICT, 0x0004, "중복된 값이 존재합니다."),
 }

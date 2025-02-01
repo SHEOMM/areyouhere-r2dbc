@@ -1,5 +1,6 @@
 package com.waffle.areyouhere.core.manager.service
 
+import com.waffle.areyouhere.crossConcern.error.AlreadyExistsEmailException
 import com.waffle.areyouhere.crossConcern.error.ManagerNotExistsException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -17,5 +18,19 @@ class ManagerFlowService(
             return foundManager.id!!
         }
         return null
+    }
+
+    suspend fun throwIfEmailAlreadyExists(email: String) {
+        if (managerService.existsByEmail(email)) {
+            throw AlreadyExistsEmailException
+        }
+    }
+
+    @Transactional
+    suspend fun update(id: Long, nickname: String, password: String) {
+        val manager = managerService.findById(id)
+        manager.name = nickname
+        manager.password = passwordEncoder.encode(password)
+        managerService.save(manager)
     }
 }

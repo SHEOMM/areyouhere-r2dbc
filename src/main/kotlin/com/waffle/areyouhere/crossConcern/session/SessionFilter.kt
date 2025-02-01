@@ -32,6 +32,7 @@ class SessionFilter(
     private val excludePatterns = listOf(
         PathPatternParser().parse("/api/auth/login"),
         PathPatternParser().parse("/api/auth/signup"),
+        PathPatternParser().parse("/api/auth//email-availability"),
         PathPatternParser().parse("/api/attendance"),
     )
 
