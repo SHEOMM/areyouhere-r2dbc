@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ManagerRepository : CoroutineCrudRepository<Manager, Long> {
     suspend fun findByEmail(email: String): Manager?
+    suspend fun existsByEmail(email: String): Boolean
 }

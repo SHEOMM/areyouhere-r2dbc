@@ -4,4 +4,4 @@ import java.io.Serializable
 
 data class SessionInfo(
     val managerId: Long,
-): Serializable
+) : Serializable

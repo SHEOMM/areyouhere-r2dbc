@@ -11,4 +11,12 @@ class ManagerService(
     suspend fun findByEmail(email: String): Manager? {
         return managerRepository.findByEmail(email)
     }
+
+    suspend fun existsByEmail(email: String): Boolean {
+        return managerRepository.existsByEmail(email)
+    }
+
+    suspend fun create(manager: Manager): Manager {
+        return managerRepository.save(manager)
+    }
 }

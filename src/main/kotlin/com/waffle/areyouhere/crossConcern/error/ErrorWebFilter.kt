@@ -1,7 +1,7 @@
 package com.waffle.areyouhere.crossConcern.error
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.slf4j.LoggerFactory
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.MediaType
@@ -18,7 +18,7 @@ class ErrorWebFilter(
     private val objectMapper: ObjectMapper,
 ) : WebFilter {
 
-    private val log = LoggerFactory.getLogger(this::class.java)
+    private val logger = KotlinLogging.logger {}
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> =
         chain.filter(exchange).onErrorResume { throwable ->
@@ -30,7 +30,7 @@ class ErrorWebFilter(
                 is AbortedException -> HttpStatus.GATEWAY_TIMEOUT to makeErrorBody(AreYouHereException())
                 else -> {
                     // TODO: 슬랙 메시지 전송
-                    log.error("Unexpected error: ", throwable)
+                    logger.error { "Unexpected error $throwable" }
                     HttpStatus.INTERNAL_SERVER_ERROR to makeErrorBody(AreYouHereException())
                 }
             }
