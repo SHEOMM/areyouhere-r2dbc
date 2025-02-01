@@ -4,7 +4,6 @@ import com.waffle.areyouhere.core.email.EmailService
 import com.waffle.areyouhere.core.email.model.MessageTemplate
 import com.waffle.areyouhere.core.manager.model.EmailCodeRepository
 import com.waffle.areyouhere.core.manager.model.Manager
-import com.waffle.areyouhere.crossConcern.error.AlreadyExistsEmailException
 import com.waffle.areyouhere.crossConcern.error.EmailNotSentYetException
 import com.waffle.areyouhere.crossConcern.error.ManagerNotExistsException
 import com.waffle.areyouhere.crossConcern.error.NotVerifiedCodeException
@@ -33,10 +32,9 @@ class ManagerFlowService(
         return null
     }
 
+    @Transactional(readOnly = true)
     suspend fun throwIfEmailAlreadyExists(email: String) {
-        if (managerService.existsByEmail(email)) {
-            throw AlreadyExistsEmailException
-        }
+        managerService.throwIfAlreadyEmailUsed(email)
     }
 
     @Transactional
@@ -52,7 +50,7 @@ class ManagerFlowService(
         managerService.throwIfAlreadyEmailUsed(email)
         if (environmentService.isLocal().not()) {
             val code = emailCodeRepository.getOrNull(EmailCodeRepository.EmailCode.Key(email)) ?: throw EmailNotSentYetException
-            if (!code.verified) throw NotVerifiedCodeException
+            if (code.verified.not()) throw NotVerifiedCodeException
         }
 
         val manager = Manager(
