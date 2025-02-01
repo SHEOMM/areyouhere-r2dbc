@@ -11,7 +11,7 @@ class ManagerFlowService(
     private val passwordEncoder: PasswordEncoder,
 ) {
     @Transactional(readOnly = true)
-    suspend fun login(email: String, password: String): Boolean{
+    suspend fun login(email: String, password: String): Boolean {
         val foundManager = managerService.findByEmail(email) ?: throw ManagerNotExistsException
         if (passwordEncoder.matches(password, foundManager.password)) {
             return true

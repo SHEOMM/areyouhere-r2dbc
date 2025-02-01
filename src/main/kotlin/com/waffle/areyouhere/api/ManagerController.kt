@@ -16,7 +16,7 @@ class ManagerController(
 ) {
     @PostMapping("login")
     suspend fun login(@RequestBody loginRequestDto: LoginRequestDTO): ResponseEntity<HttpStatus> {
-        if(managerFlowService.login(email = loginRequestDto.email, password = loginRequestDto.password)){
+        if (managerFlowService.login(email = loginRequestDto.email, password = loginRequestDto.password)) {
             return ResponseEntity.status(HttpStatus.OK).build()
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build()

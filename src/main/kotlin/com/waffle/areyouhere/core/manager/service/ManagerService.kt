@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class ManagerService(
     private val managerRepository: ManagerRepository,
 ) {
-    suspend fun findByEmail(email: String): Manager?{
+    suspend fun findByEmail(email: String): Manager? {
         return managerRepository.findByEmail(email)
     }
 }
