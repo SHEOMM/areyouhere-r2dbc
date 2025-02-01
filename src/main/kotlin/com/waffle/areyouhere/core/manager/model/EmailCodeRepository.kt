@@ -9,17 +9,17 @@ import org.springframework.stereotype.Component
 import java.time.Duration
 
 @Component
-class VerifyCodeRepository(
+class EmailCodeRepository(
     reactiveRedisConnectionFactory: ReactiveRedisConnectionFactory,
     objectMapper: ObjectMapper,
-) : CacheRepository<VerifyCodeRepository.VerifyCode.Key, VerifyCodeRepository.VerifyCode.Value> by RedisRepository.create(
+) : CacheRepository<EmailCodeRepository.EmailCode.Key, EmailCodeRepository.EmailCode.Value> by RedisRepository.create(
     reactiveRedisConnectionFactory = reactiveRedisConnectionFactory,
     objectMapper = objectMapper,
     defaultExpiry = Duration.ofMinutes(5),
     keyPrefix = "email_verification",
 ) {
 
-    class VerifyCode {
+    class EmailCode {
         class Key(
             val email: String,
         ) : CacheKey {

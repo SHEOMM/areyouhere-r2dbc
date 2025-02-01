@@ -2,8 +2,8 @@ package com.waffle.areyouhere.core.manager.service
 
 import com.waffle.areyouhere.core.email.EmailService
 import com.waffle.areyouhere.core.email.model.MessageTemplate
+import com.waffle.areyouhere.core.manager.model.EmailCodeRepository
 import com.waffle.areyouhere.core.manager.model.Manager
-import com.waffle.areyouhere.core.manager.model.VerifyCodeRepository
 import com.waffle.areyouhere.crossConcern.error.AlreadyExistsEmailException
 import com.waffle.areyouhere.crossConcern.error.EmailNotSentYetException
 import com.waffle.areyouhere.crossConcern.error.ManagerNotExistsException
@@ -22,7 +22,7 @@ class ManagerFlowService(
     private val alphanumericIdGenerator: AlphanumericIdGenerator,
     private val passwordEncoder: PasswordEncoder,
     private val emailService: EmailService,
-    private val verifyCodeRepository: VerifyCodeRepository,
+    private val emailCodeRepository: EmailCodeRepository,
 ) {
     @Transactional(readOnly = true)
     suspend fun login(email: String, password: String): Long? {
@@ -51,7 +51,7 @@ class ManagerFlowService(
     suspend fun signUp(email: String, password: String, nickname: String): Long {
         managerService.throwIfAlreadyEmailUsed(email)
         if (environmentService.isLocal().not()) {
-            val code = verifyCodeRepository.getOrNull(VerifyCodeRepository.VerifyCode.Key(email)) ?: throw EmailNotSentYetException
+            val code = emailCodeRepository.getOrNull(EmailCodeRepository.EmailCode.Key(email)) ?: throw EmailNotSentYetException
             if (!code.verified) throw NotVerifiedCodeException
         }
 
@@ -68,9 +68,9 @@ class ManagerFlowService(
     suspend fun sendSignUpEmail(email: String) {
         managerService.throwIfAlreadyEmailUsed(email)
         val code = alphanumericIdGenerator.generate(codeLength)
-        verifyCodeRepository.set(
-            VerifyCodeRepository.VerifyCode.Key(email),
-            VerifyCodeRepository.VerifyCode.Value(code),
+        emailCodeRepository.set(
+            EmailCodeRepository.EmailCode.Key(email),
+            EmailCodeRepository.EmailCode.Value(code),
         )
 
         emailService.sendVerifyEmail(email, code, MessageTemplate.SIGN_UP)
@@ -78,11 +78,11 @@ class ManagerFlowService(
 
     @Transactional(readOnly = true)
     suspend fun verifyEmail(email: String, code: String) {
-        val savedCode = verifyCodeRepository.getOrNull(VerifyCodeRepository.VerifyCode.Key(email)) ?: throw EmailNotSentYetException
+        val savedCode = emailCodeRepository.getOrNull(EmailCodeRepository.EmailCode.Key(email)) ?: throw EmailNotSentYetException
         if (code != savedCode.code) throw VerificationCodeNotMatchedException
-        verifyCodeRepository.set(
-            VerifyCodeRepository.VerifyCode.Key(email),
-            VerifyCodeRepository.VerifyCode.Value(code, true),
+        emailCodeRepository.set(
+            EmailCodeRepository.EmailCode.Key(email),
+            EmailCodeRepository.EmailCode.Value(code, true),
         )
     }
 
