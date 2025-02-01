@@ -33,6 +33,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.springframework.session:spring-session-data-redis")
+    // logging
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     // liquidbase
     implementation("org.liquibase:liquibase-core:4.24.0")

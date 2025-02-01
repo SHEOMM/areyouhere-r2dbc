@@ -42,6 +42,8 @@ slack:
 cors:
   allowed-origins: https://areyouhere.today, https://www.areyouhere.today
 
+environment: release
+
 cookie:
     encode: ${SECRET_KEY}
 

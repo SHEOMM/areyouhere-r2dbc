@@ -9,3 +9,6 @@ open class AreYouHereException(
 object ManagerNotExistsException : AreYouHereException(ErrorType.BAD_REQUEST, displayMessage = "존재하지 않는 계정입니다.")
 object UnAuthorizeException : AreYouHereException(ErrorType.UNAUTHORIZED, displayMessage = "로그인 후 재시도해주세요.")
 object AlreadyExistsEmailException : AreYouHereException(ErrorType.RESPONSE_CONFLICT, displayMessage = "중복된 이메일이 있습니다. 다른 이메일로 시도해주세요.")
+object EmailNotSentYetException : AreYouHereException(ErrorType.BAD_REQUEST, displayMessage = "이메일을 먼저 보낸 후 인증을 시도해주세요.")
+object VerificationCodeNotMatchedException : AreYouHereException(ErrorType.BAD_REQUEST, displayMessage = "코드가 일치하지 않습니다.")
+object NotVerifiedCodeException : AreYouHereException(ErrorType.UNAUTHORIZED, displayMessage = "코드를 먼저 인증해주세요.")

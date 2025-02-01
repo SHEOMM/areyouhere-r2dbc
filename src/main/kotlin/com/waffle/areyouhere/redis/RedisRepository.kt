@@ -13,13 +13,13 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 import java.time.Duration
 import kotlin.reflect.KClass
 
-class RedisCache<K : CacheKey, V : Any>(
+class RedisRepository<K : CacheKey, V : Any>(
     reactiveRedisConnectionFactory: ReactiveRedisConnectionFactory,
     objectMapper: ObjectMapper,
     valueClass: KClass<V>,
     private val defaultExpiry: Duration,
     private val keyPrefix: String,
-) {
+) : CacheRepository<K, V> {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -33,18 +33,18 @@ class RedisCache<K : CacheKey, V : Any>(
             .build(),
     )
 
-    suspend fun set(key: K, value: V?, expiry: Duration = defaultExpiry) {
+    override suspend fun set(key: K, value: V?, expiry: Duration?) {
         try {
             if (value == null) redisTemplate.deleteAndAwait(key.toCacheKeyString())
             else {
-                redisTemplate.opsForValue().setAndAwait(key.toCacheKeyString(), value, expiry)
+                redisTemplate.opsForValue().setAndAwait(key.toCacheKeyString(), value, expiry ?: defaultExpiry)
             }
         } catch (e: Throwable) {
             logger.error(e.message, e)
         }
     }
 
-    suspend fun get(key: K): V? {
+    override suspend fun getOrNull(key: K): V? {
         return try {
             redisTemplate.opsForValue()
                 .getAndAwait(key.toCacheKeyString())
@@ -64,8 +64,8 @@ class RedisCache<K : CacheKey, V : Any>(
             objectMapper: ObjectMapper,
             defaultExpiry: Duration,
             keyPrefix: String,
-        ): RedisCache<K, V> {
-            return RedisCache(
+        ): RedisRepository<K, V> {
+            return RedisRepository(
                 reactiveRedisConnectionFactory = reactiveRedisConnectionFactory,
                 objectMapper = objectMapper,
                 valueClass = V::class,

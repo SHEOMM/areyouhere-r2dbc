@@ -24,9 +24,12 @@ class ErrorWebFilter(
         chain.filter(exchange).onErrorResume { throwable ->
             val (httpStatus, errorBody) = when (throwable) {
                 is AreYouHereException -> throwable.error.httpStatus to makeErrorBody(throwable)
-                is ResponseStatusException -> throwable.statusCode to makeErrorBody(
-                    AreYouHereException(errorMessage = throwable.body.title ?: ErrorType.DEFAULT_ERROR.errorMessage),
-                )
+                is ResponseStatusException -> {
+                    logger.info { throwable.printStackTrace() }
+                    throwable.statusCode to makeErrorBody(
+                        AreYouHereException(errorMessage = throwable.body.title ?: ErrorType.DEFAULT_ERROR.errorMessage),
+                    )
+                }
                 is AbortedException -> HttpStatus.GATEWAY_TIMEOUT to makeErrorBody(AreYouHereException())
                 else -> {
                     // TODO: 슬랙 메시지 전송

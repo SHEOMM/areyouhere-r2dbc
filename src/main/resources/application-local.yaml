@@ -1,5 +1,9 @@
 spring.config.activate.on-profile: local
 
+management:
+  health:
+    mail:
+      enabled: false
 spring:
   r2dbc:
     url: r2dbc:h2:file://localhost/~/areyouhere
@@ -44,10 +48,12 @@ spring:
             redirect-uri: https://localhost:8080/api/login/oauth2/code/google
 logging:
   level:
-    root: debug
+    root: info
 
 cors:
   allowed-origins: http://localhost:5173
+
+environment: local
 
 cookie:
   encode: TEMP

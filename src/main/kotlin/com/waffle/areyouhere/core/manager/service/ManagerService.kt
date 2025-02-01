@@ -2,6 +2,7 @@ package com.waffle.areyouhere.core.manager.service
 
 import com.waffle.areyouhere.core.manager.model.Manager
 import com.waffle.areyouhere.core.manager.repository.ManagerRepository
+import com.waffle.areyouhere.crossConcern.error.AlreadyExistsEmailException
 import com.waffle.areyouhere.crossConcern.error.ManagerNotExistsException
 import org.springframework.stereotype.Service
 
@@ -15,6 +16,10 @@ class ManagerService(
 
     suspend fun existsByEmail(email: String): Boolean {
         return managerRepository.existsByEmail(email)
+    }
+
+    suspend fun throwIfAlreadyEmailUsed(email: String) {
+        if (existsByEmail(email)) throw AlreadyExistsEmailException
     }
 
     suspend fun findById(id: Long): Manager {

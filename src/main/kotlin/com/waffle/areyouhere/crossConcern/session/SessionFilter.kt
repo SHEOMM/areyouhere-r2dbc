@@ -29,10 +29,14 @@ class SessionFilter(
 
     private val logger = KotlinLogging.logger {}
     private val basePattern = PathPatternParser().parse("/api/**")
+
+    // FIXME: 프론트와 url 통일해서 regexp로 대응
     private val excludePatterns = listOf(
         PathPatternParser().parse("/api/auth/login"),
         PathPatternParser().parse("/api/auth/signup"),
-        PathPatternParser().parse("/api/auth//email-availability"),
+        PathPatternParser().parse("/api/auth/email"),
+        PathPatternParser().parse("/api/auth/email-availability"),
+        PathPatternParser().parse("/api/auth/verification"),
         PathPatternParser().parse("/api/attendance"),
     )
 
@@ -79,9 +83,12 @@ class SessionFilter(
     private fun handleFilterError(error: Throwable, exchange: ServerWebExchange): Mono<Void> {
         val (httpStatus, errorBody) = when (error) {
             is AreYouHereException -> error.error.httpStatus to makeErrorBody(error)
-            is ResponseStatusException -> error.statusCode to makeErrorBody(
-                AreYouHereException(errorMessage = error.body.title ?: ErrorType.DEFAULT_ERROR.errorMessage),
-            )
+            is ResponseStatusException -> {
+                logger.info { error.printStackTrace() }
+                error.statusCode to makeErrorBody(
+                    AreYouHereException(errorMessage = error.body.title ?: ErrorType.DEFAULT_ERROR.errorMessage),
+                )
+            }
             else -> {
                 logger.error { "Unexpected error $error" }
                 HttpStatus.INTERNAL_SERVER_ERROR to makeErrorBody(AreYouHereException())

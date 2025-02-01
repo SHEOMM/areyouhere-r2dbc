@@ -1,7 +1,6 @@
 package com.waffle.areyouhere.api
 
 import com.waffle.areyouhere.core.manager.service.ManagerFlowService
-import com.waffle.areyouhere.core.manager.service.ManagerSignUpApiService
 import com.waffle.areyouhere.core.session.SessionInfo
 import com.waffle.areyouhere.core.session.SessionManager
 import org.springframework.http.HttpStatus
@@ -20,7 +19,6 @@ import org.springframework.web.server.WebSession
 @RequestMapping("/api/auth")
 class ManagerController(
     private val managerFlowService: ManagerFlowService,
-    private val managerSignUpApiService: ManagerSignUpApiService,
     private val sessionManager: SessionManager,
 ) {
     @PostMapping("/login")
@@ -35,7 +33,7 @@ class ManagerController(
 
     @PostMapping("signup")
     suspend fun signUp(@RequestBody signUpRequestDTO: SignUpRequestDTO, session: WebSession): ResponseEntity<HttpStatus> {
-        val managerId = managerSignUpApiService.signUp(signUpRequestDTO.email, signUpRequestDTO.password, signUpRequestDTO.password)
+        val managerId = managerFlowService.signUp(signUpRequestDTO.email, signUpRequestDTO.password, signUpRequestDTO.password)
         sessionManager.set(session, SessionInfo(managerId))
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -72,6 +70,20 @@ class ManagerController(
             .build()
     }
 
+    @GetMapping("/email")
+    suspend fun sendSignUpEmail(@RequestParam email: String): ResponseEntity<HttpStatus> {
+        managerFlowService.sendSignUpEmail(email)
+        return ResponseEntity.status(HttpStatus.OK)
+            .build()
+    }
+
+    @PostMapping("/verification")
+    suspend fun verifyEmail(@RequestBody verifyEmailRequestDto: VerifyEmailRequestDto): ResponseEntity<HttpStatus> {
+        managerFlowService.verifyEmail(verifyEmailRequestDto.email, verifyEmailRequestDto.code)
+        return ResponseEntity.status(HttpStatus.OK)
+            .build()
+    }
+
     data class LoginRequestDTO(
         val email: String,
         val password: String,
@@ -86,5 +98,10 @@ class ManagerController(
     data class UpdateRequestDto(
         val nickname: String,
         val password: String,
+    )
+
+    data class VerifyEmailRequestDto(
+        val code: String,
+        val email: String,
     )
 }
