@@ -36,13 +36,11 @@ dependencies {
     // logging
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     // liquidbase
-    implementation("org.liquibase:liquibase-core:4.24.0")
-    implementation("org.liquibase:liquibase-groovy-dsl:2.1.1")
-    liquibaseRuntime("info.picocli:picocli:4.7.5")
-    liquibaseRuntime("org.yaml:snakeyaml:1.33")
-    runtimeOnly("mysql:mysql-connector-java:5.1.34")
+    implementation("org.liquibase:liquibase-core:4.31.0")
+    liquibaseRuntime("info.picocli:picocli:4.7.6")
+    liquibaseRuntime("org.yaml:snakeyaml:2.3")
+    runtimeOnly("mysql:mysql-connector-java:8.0.33")
     runtimeOnly("com.h2database:h2")
-    implementation("com.mysql:mysql-connector-j")
     implementation("io.asyncer:r2dbc-mysql")
     implementation("io.r2dbc:r2dbc-h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

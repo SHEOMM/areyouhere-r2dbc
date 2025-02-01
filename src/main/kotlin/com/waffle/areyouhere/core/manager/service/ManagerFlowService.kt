@@ -39,10 +39,11 @@ class ManagerFlowService(
 
     @Transactional
     suspend fun update(id: Long, nickname: String, password: String) {
-        val manager = managerService.findById(id)
-        manager.name = nickname
-        manager.password = passwordEncoder.encode(password)
-        managerService.save(manager)
+        managerService.findById(id)
+            .apply {
+                this.name = nickname
+                this.password = passwordEncoder.encode(password)
+            }.also { managerService.save(it) }
     }
 
     @Transactional
