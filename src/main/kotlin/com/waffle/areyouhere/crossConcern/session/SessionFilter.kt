@@ -25,14 +25,9 @@ class SessionFilter(
     private val logger = KotlinLogging.logger {}
     private val basePattern = PathPatternParser().parse("/api/**")
 
-    // FIXME: 프론트와 url 통일해서 regexp로 대응
     private val excludePatterns = listOf(
-        PathPatternParser().parse("/api/auth/login"),
-        PathPatternParser().parse("/api/auth/signup"),
-        PathPatternParser().parse("/api/auth/email"),
-        PathPatternParser().parse("/api/auth/email-availability"),
-        PathPatternParser().parse("/api/auth/verification"),
-        PathPatternParser().parse("/api/attendance"),
+        PathPatternParser().parse("/api/auth/(login|me|signup|email|email-availability|verification)"),
+        PathPatternParser().parse("/api/attendance")
     )
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
@@ -64,9 +59,8 @@ class SessionFilter(
     }
 
     private fun shouldApplyFilter(exchange: ServerWebExchange): Boolean {
-        val isOptionsMethod = exchange.request.method == org.springframework.http.HttpMethod.OPTIONS
         val path = exchange.request.path.pathWithinApplication()
-        return basePattern.matches(path) && excludePatterns.none { it.matches(path) } && !isOptionsMethod
+        return basePattern.matches(path) && excludePatterns.none { it.matches(path) }
     }
 
     private fun logRequest(request: ServerHttpRequest) {

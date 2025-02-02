@@ -7,13 +7,13 @@ data class CourseAndAttendeesCountDto(
     val name: String,
     val description: String?,
     val allowOnlyRegistered: Boolean,
-    val attendeesCount: Long,
+    val attendees: Long,
 ) {
     constructor(course: Course, attendeesCount: Long) : this(
         id = course.id!!,
         name = course.name,
         description = course.description,
         allowOnlyRegistered = course.allowOnlyRegistered,
-        attendeesCount = attendeesCount,
+        attendees = attendeesCount,
     )
 }

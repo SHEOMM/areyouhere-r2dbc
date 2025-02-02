@@ -29,14 +29,17 @@ class CourseFlowService(
         )
         val savedCourse = courseService.save(course)
 
-        val attendees = attendeeDtos.map {
-            Attendee(
-                name = it.name,
-                note = it.note,
-                courseId = savedCourse.id!!,
-            )
-        }
-        attendeeService.insertBatch(attendees)
+        val attendees = if(attendeeDtos.isNotEmpty()) {
+            attendeeDtos.map {
+                Attendee(
+                    name = it.name,
+                    note = it.note,
+                    courseId = savedCourse.id!!,
+                )
+            }
+        } else null
+
+        attendees?.let { attendeeService.insertBatch(it) }
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +52,7 @@ class CourseFlowService(
                 description = it.description,
                 allowOnlyRegistered = it.allowOnlyRegistered,
                 // FIXME: 쿼리 하나로?
-                attendeesCount = attendeeService.countInCourse(it.id!!),
+                attendees = attendeeService.countInCourse(it.id!!),
             )
         }
     }
