@@ -1,6 +1,7 @@
 package com.waffle.areyouhere.api
 
 import com.waffle.areyouhere.core.manager.service.ManagerFlowService
+import com.waffle.areyouhere.core.manager.service.dto.ManagerDto
 import com.waffle.areyouhere.core.session.SessionInfo
 import com.waffle.areyouhere.core.session.SessionManager
 import org.springframework.http.HttpStatus
@@ -84,6 +85,13 @@ class ManagerController(
             .build()
     }
 
+    @GetMapping("/me")
+    suspend fun isLogin(session: WebSession): ResponseEntity<ManagerDto> {
+        val managerId = sessionManager.login().getManagerIdOrThrow(session)
+        val response = managerFlowService.get(managerId)
+        return ResponseEntity.ok(response)
+    }
+
     data class LoginRequestDTO(
         val email: String,
         val password: String,
@@ -92,7 +100,7 @@ class ManagerController(
     data class SignUpRequestDTO(
         val email: String,
         val password: String,
-        val nickname: String,
+        val name: String,
     )
 
     data class UpdateRequestDto(

@@ -4,7 +4,7 @@
 CREATE TABLE course (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    description TEXT NULL,
+    description TEXT NULL DEFAULT NULL,
     allow_only_registered BOOLEAN NOT NULL,
     manager_id BIGINT NOT NULL,
     created_at TIMESTAMP(6) NOT NULL,

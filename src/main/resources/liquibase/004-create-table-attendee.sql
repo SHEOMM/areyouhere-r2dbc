@@ -4,7 +4,7 @@
 CREATE TABLE attendee (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    note TEXT NULL,
+    note TEXT NULL DEFAULT NULL,
     course_id BIGINT NOT NULL,
     created_at TIMESTAMP(6) NOT NULL,
     updated_at TIMESTAMP(6) NOT NULL

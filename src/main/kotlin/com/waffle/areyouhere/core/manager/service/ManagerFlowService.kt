@@ -4,6 +4,7 @@ import com.waffle.areyouhere.core.email.EmailService
 import com.waffle.areyouhere.core.email.model.MessageTemplate
 import com.waffle.areyouhere.core.manager.model.EmailCodeRepository
 import com.waffle.areyouhere.core.manager.model.Manager
+import com.waffle.areyouhere.core.manager.service.dto.ManagerDto
 import com.waffle.areyouhere.crossConcern.error.EmailNotSentYetException
 import com.waffle.areyouhere.crossConcern.error.ManagerNotExistsException
 import com.waffle.areyouhere.crossConcern.error.NotVerifiedCodeException
@@ -83,6 +84,11 @@ class ManagerFlowService(
             EmailCodeRepository.EmailCode.Key(email),
             EmailCodeRepository.EmailCode.Value(code, true),
         )
+    }
+
+    @Transactional(readOnly = true)
+    suspend fun get(managerId: Long): ManagerDto {
+        return ManagerDto(managerService.findById(managerId))
     }
 
     private final val codeLength = 6
