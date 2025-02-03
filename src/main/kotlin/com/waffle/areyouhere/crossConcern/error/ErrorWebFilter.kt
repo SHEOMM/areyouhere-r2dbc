@@ -2,6 +2,7 @@ package com.waffle.areyouhere.crossConcern.error
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.MediaType
@@ -13,6 +14,7 @@ import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 import reactor.netty.channel.AbortedException
 
+@Order(Integer.MIN_VALUE)
 @Component
 class ErrorWebFilter(
     private val objectMapper: ObjectMapper,
@@ -25,6 +27,7 @@ class ErrorWebFilter(
             val (httpStatus, errorBody) = when (throwable) {
                 is AreYouHereException -> throwable.error.httpStatus to makeErrorBody(throwable)
                 is ResponseStatusException -> {
+                    logger.info { "Unexpected error $throwable" }
                     logger.info { throwable.printStackTrace() }
                     throwable.statusCode to makeErrorBody(
                         AreYouHereException(errorMessage = throwable.body.title ?: ErrorType.DEFAULT_ERROR.errorMessage),
@@ -34,6 +37,7 @@ class ErrorWebFilter(
                 else -> {
                     // TODO: 슬랙 메시지 전송
                     logger.error { "Unexpected error $throwable" }
+                    logger.error { throwable.printStackTrace() }
                     HttpStatus.INTERNAL_SERVER_ERROR to makeErrorBody(AreYouHereException())
                 }
             }

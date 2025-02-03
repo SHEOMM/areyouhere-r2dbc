@@ -20,7 +20,6 @@ spring:
     password:
     driver-class-name: org.h2.Driver
     enabled: true
-    drop-first: true
   data:
     redis:
       host: localhost
