@@ -14,7 +14,7 @@ import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 import reactor.netty.channel.AbortedException
 
-@Order(Integer.MAX_VALUE)
+@Order(Integer.MIN_VALUE)
 @Component
 class ErrorWebFilter(
     private val objectMapper: ObjectMapper,

@@ -16,7 +16,7 @@ import org.springframework.web.util.pattern.PathPatternParser
 import reactor.core.publisher.Mono
 import java.util.concurrent.TimeUnit
 
-@Order(Integer.MIN_VALUE)
+@Order(Integer.MAX_VALUE)
 @Component
 class SessionFilter(
     private val meterRegistry: MeterRegistry,
@@ -27,7 +27,7 @@ class SessionFilter(
 
     private val excludePatterns = listOf(
         PathPatternParser().parse("/api/auth/(login|me|signup|email|email-availability|verification)"),
-        PathPatternParser().parse("/api/attendance")
+        PathPatternParser().parse("/api/attendance"),
     )
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
@@ -59,8 +59,9 @@ class SessionFilter(
     }
 
     private fun shouldApplyFilter(exchange: ServerWebExchange): Boolean {
+        val isOptionsMethod = exchange.request.method == org.springframework.http.HttpMethod.OPTIONS
         val path = exchange.request.path.pathWithinApplication()
-        return basePattern.matches(path) && excludePatterns.none { it.matches(path) }
+        return basePattern.matches(path) && excludePatterns.none { it.matches(path) } && isOptionsMethod.not()
     }
 
     private fun logRequest(request: ServerHttpRequest) {

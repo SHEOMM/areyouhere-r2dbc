@@ -29,7 +29,7 @@ class CourseFlowService(
         )
         val savedCourse = courseService.save(course)
 
-        val attendees = if(attendeeDtos.isNotEmpty()) {
+        val attendees = if (attendeeDtos.isNotEmpty()) {
             attendeeDtos.map {
                 Attendee(
                     name = it.name,

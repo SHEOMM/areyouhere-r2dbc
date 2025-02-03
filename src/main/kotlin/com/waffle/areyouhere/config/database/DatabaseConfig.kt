@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 @Configuration
 @EnableR2dbcAuditing
 @EnableTransactionManagement
-class DatabaseConfig{
+class DatabaseConfig {
     @Bean
     fun reactiveTransactionManager(connectionFactory: ConnectionFactory): ReactiveTransactionManager {
         return R2dbcTransactionManager(TransactionAwareConnectionFactoryProxy(connectionFactory))
