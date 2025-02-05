@@ -12,4 +12,5 @@ enum class ErrorType(
     BAD_REQUEST(HttpStatus.BAD_REQUEST, 0x0001, "잘못된 요청입니다"),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 0x0003, "인증되지 않은 요청입니다."),
     RESPONSE_CONFLICT(HttpStatus.CONFLICT, 0x0004, "중복된 값이 존재합니다."),
+    NOT_FOUND(HttpStatus.NOT_FOUND, 0x0005, "존재하지 않는 값에 대한 요청입니다."),
 }
