@@ -13,3 +13,4 @@ object EmailNotSentYetException : AreYouHereException(ErrorType.BAD_REQUEST, dis
 object VerificationCodeNotMatchedException : AreYouHereException(ErrorType.BAD_REQUEST, displayMessage = "코드가 일치하지 않습니다.")
 object NotVerifiedCodeException : AreYouHereException(ErrorType.UNAUTHORIZED, displayMessage = "코드를 먼저 인증해주세요.")
 object AttendeeNotUniqueException : AreYouHereException(ErrorType.RESPONSE_CONFLICT, displayMessage = "중복되는 수강자의 이름의 note를 변경해주세요.")
+object CourseNotFoundException : AreYouHereException(ErrorType.NOT_FOUND, displayMessage = "존재하지 않는 강의입니다.")
