@@ -1,7 +1,7 @@
-package com.waffle.areyouhere.core.manager.model
+package com.waffle.areyouhere.core.manager.repository
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.waffle.areyouhere.redis.CacheKey
+import com.waffle.areyouhere.core.manager.model.EmailCode
 import com.waffle.areyouhere.redis.CacheRepository
 import com.waffle.areyouhere.redis.RedisRepository
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory
@@ -12,25 +12,9 @@ import java.time.Duration
 class EmailCodeRepository(
     reactiveRedisConnectionFactory: ReactiveRedisConnectionFactory,
     objectMapper: ObjectMapper,
-) : CacheRepository<EmailCodeRepository.EmailCode.Key, EmailCodeRepository.EmailCode.Value> by RedisRepository.create(
+) : CacheRepository<EmailCode.Key, EmailCode.Value> by RedisRepository.create(
     reactiveRedisConnectionFactory = reactiveRedisConnectionFactory,
     objectMapper = objectMapper,
     defaultExpiry = Duration.ofMinutes(5),
     keyPrefix = "email_verification",
-) {
-
-    class EmailCode {
-        class Key(
-            val email: String,
-        ) : CacheKey {
-            override fun toCacheKey(): String {
-                return email
-            }
-        }
-
-        data class Value(
-            val code: String,
-            val verified: Boolean = false,
-        )
-    }
-}
+)

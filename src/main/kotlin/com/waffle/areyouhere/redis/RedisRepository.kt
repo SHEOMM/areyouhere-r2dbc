@@ -23,7 +23,7 @@ class RedisRepository<K : CacheKey, V : Any>(
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    private val redisTemplate = ReactiveRedisTemplate(
+    val redisTemplate = ReactiveRedisTemplate(
         reactiveRedisConnectionFactory,
         RedisSerializationContext.newSerializationContext<String, V>()
             .key(StringRedisSerializer())
@@ -51,6 +51,17 @@ class RedisRepository<K : CacheKey, V : Any>(
         } catch (e: Throwable) {
             logger.error(e.message, e)
             null
+        }
+    }
+
+    override suspend fun delete(key: K): Long {
+        return try {
+            val cacheKey = key.toCacheKeyString()
+
+            redisTemplate.deleteAndAwait(cacheKey)
+        } catch (t: Throwable) {
+            logger.error(t.message, t)
+            0
         }
     }
 
