@@ -2,6 +2,7 @@ package com.waffle.areyouhere.core.manager.service
 
 import com.waffle.areyouhere.core.email.EmailService
 import com.waffle.areyouhere.core.email.model.MessageTemplate
+import com.waffle.areyouhere.core.manager.model.EmailCode
 import com.waffle.areyouhere.core.manager.model.Manager
 import com.waffle.areyouhere.core.manager.repository.EmailCodeRepository
 import com.waffle.areyouhere.core.manager.service.dto.ManagerDto
@@ -51,7 +52,7 @@ class ManagerFlowService(
     suspend fun signUp(email: String, password: String, nickname: String): Long {
         managerService.throwIfAlreadyEmailUsed(email)
         if (environmentService.isLocal().not()) {
-            val code = emailCodeRepository.getOrNull(EmailCodeRepository.EmailCode.Key(email)) ?: throw EmailNotSentYetException
+            val code = emailCodeRepository.getOrNull(EmailCode.Key(email)) ?: throw EmailNotSentYetException
             if (code.verified.not()) throw NotVerifiedCodeException
         }
 
@@ -69,8 +70,8 @@ class ManagerFlowService(
         managerService.throwIfAlreadyEmailUsed(email)
         val code = alphanumericIdGenerator.generate(codeLength)
         emailCodeRepository.set(
-            EmailCodeRepository.EmailCode.Key(email),
-            EmailCodeRepository.EmailCode.Value(code),
+            EmailCode.Key(email),
+            EmailCode.Value(code),
         )
 
         emailService.sendVerifyEmail(email, code, MessageTemplate.SIGN_UP)
@@ -78,11 +79,11 @@ class ManagerFlowService(
 
     @Transactional(readOnly = true)
     suspend fun verifyEmail(email: String, code: String) {
-        val savedCode = emailCodeRepository.getOrNull(EmailCodeRepository.EmailCode.Key(email)) ?: throw EmailNotSentYetException
+        val savedCode = emailCodeRepository.getOrNull(EmailCode.Key(email)) ?: throw EmailNotSentYetException
         if (code != savedCode.code) throw VerificationCodeNotMatchedException
         emailCodeRepository.set(
-            EmailCodeRepository.EmailCode.Key(email),
-            EmailCodeRepository.EmailCode.Value(code, true),
+            EmailCode.Key(email),
+            EmailCode.Value(code, true),
         )
     }
 
