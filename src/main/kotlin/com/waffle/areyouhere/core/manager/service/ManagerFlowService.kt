@@ -2,8 +2,8 @@ package com.waffle.areyouhere.core.manager.service
 
 import com.waffle.areyouhere.core.email.EmailService
 import com.waffle.areyouhere.core.email.model.MessageTemplate
-import com.waffle.areyouhere.core.manager.model.EmailCodeRepository
 import com.waffle.areyouhere.core.manager.model.Manager
+import com.waffle.areyouhere.core.manager.repository.EmailCodeRepository
 import com.waffle.areyouhere.core.manager.service.dto.ManagerDto
 import com.waffle.areyouhere.crossConcern.error.EmailNotSentYetException
 import com.waffle.areyouhere.crossConcern.error.ManagerNotExistsException
