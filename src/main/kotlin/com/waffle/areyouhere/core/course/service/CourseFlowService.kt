@@ -7,7 +7,6 @@ import com.waffle.areyouhere.core.course.service.dto.CourseAndAttendeesCountDto
 import com.waffle.areyouhere.core.course.service.dto.CourseDto
 import com.waffle.areyouhere.core.course.service.dto.CourseSaveDto
 import com.waffle.areyouhere.crossConcern.error.AttendeeNotUniqueException
-import com.waffle.areyouhere.crossConcern.error.UnAuthorizeException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -46,9 +45,7 @@ class CourseFlowService(
 
     @Transactional(readOnly = true)
     suspend fun get(courseId: Long, managerId: Long): CourseDto {
-        val course = courseService.get(courseId)
-        throwIfCourseAuthorizationFail(managerId, course)
-        return courseService.get(courseId)
+        return courseService.getWithManagerId(courseId, managerId)
     }
 
     @Transactional(readOnly = true)
@@ -68,20 +65,14 @@ class CourseFlowService(
 
     @Transactional
     suspend fun update(managerId: Long, courseId: Long, name: String, description: String?, allowOnlyRegistered: Boolean) {
-        val courseDto = courseService.get(courseId)
+        val courseDto = courseService.getWithManagerId(courseId, managerId)
         courseDto.update(name, description, allowOnlyRegistered)
-        throwIfCourseAuthorizationFail(managerId, courseDto)
         courseService.update(courseDto)
     }
 
     @Transactional
     suspend fun delete(managerId: Long, courseId: Long) {
-        val courseDto = courseService.get(courseId)
-        throwIfCourseAuthorizationFail(managerId, courseDto)
+        val courseDto = courseService.getWithManagerId(courseId, managerId)
         courseService.delete(courseDto)
-    }
-
-    private fun throwIfCourseAuthorizationFail(managerId: Long, course: CourseDto) {
-        if (course.managerId != managerId) throw UnAuthorizeException
     }
 }

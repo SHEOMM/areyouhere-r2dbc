@@ -5,6 +5,7 @@ import com.waffle.areyouhere.core.course.repository.CourseRepository
 import com.waffle.areyouhere.core.course.service.dto.CourseDto
 import com.waffle.areyouhere.core.course.service.dto.CourseSaveDto
 import com.waffle.areyouhere.crossConcern.error.CourseNotFoundException
+import com.waffle.areyouhere.crossConcern.error.UnAuthorizeException
 import org.springframework.stereotype.Service
 
 @Service
@@ -23,6 +24,13 @@ class CourseService(
 
     suspend fun get(courseId: Long): CourseDto {
         return courseRepository.findById(courseId)?.let {
+            CourseDto(it)
+        } ?: throw CourseNotFoundException
+    }
+
+    suspend fun getWithManagerId(courseId: Long, managerId: Long): CourseDto {
+        return courseRepository.findById(courseId)?.let {
+            if (it.managerId != managerId) throw UnAuthorizeException
             CourseDto(it)
         } ?: throw CourseNotFoundException
     }

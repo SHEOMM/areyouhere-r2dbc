@@ -16,3 +16,4 @@ object AttendeeNotUniqueException : AreYouHereException(ErrorType.RESPONSE_CONFL
 object CourseNotFoundException : AreYouHereException(ErrorType.NOT_FOUND, displayMessage = "존재하지 않는 강의입니다.")
 object ActivatedSessionExistsException : AreYouHereException(ErrorType.RESPONSE_CONFLICT, displayMessage = "이미 활성화된 세션이 존재합니다.")
 object AttendeeNotFoundException : AreYouHereException(ErrorType.BAD_REQUEST, displayMessage = "수강 인원이 존재하지 않습니다.")
+object SectionNotFoundException : AreYouHereException(ErrorType.NOT_FOUND, displayMessage = "존재하지 않는 세션입니다.")
