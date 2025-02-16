@@ -1,7 +1,7 @@
 package com.waffle.areyouhere.core.attendance.active.model
 
 import com.waffle.areyouhere.core.attendance.model.AttendanceType
-import com.waffle.areyouhere.core.attendee.service.dto.AttendeeNameNote
+import com.waffle.areyouhere.core.attendee.service.dto.AttendeeNameNoteDto
 import com.waffle.areyouhere.redis.CacheKey
 import java.time.Instant
 
@@ -20,7 +20,7 @@ class ActiveSection {
         val courseId: Long,
         val courseName: String,
         val sectionName: String,
-        val attendees: List<AttendeeNameNote>,
+        val attendees: List<AttendeeNameNoteDto>,
         val attendances: Map<Long, AttendanceTime>,
         val attendanceStatus: AttendanceType,
         val createdAt: Instant,

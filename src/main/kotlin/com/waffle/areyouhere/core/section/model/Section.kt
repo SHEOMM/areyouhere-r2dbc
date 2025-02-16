@@ -1,5 +1,6 @@
 package com.waffle.areyouhere.core.section.model
 
+import com.waffle.areyouhere.core.section.service.dto.SectionSaveDto
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.LastModifiedDate
@@ -16,4 +17,9 @@ data class Section(
     var createdAt: Instant? = null,
     @LastModifiedDate
     var updatedAt: Instant? = null,
-)
+) {
+    constructor(sectionDto: SectionSaveDto) : this(
+        name = sectionDto.name,
+        courseId = sectionDto.courseId,
+    )
+}

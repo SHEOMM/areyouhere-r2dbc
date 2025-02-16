@@ -14,3 +14,5 @@ object VerificationCodeNotMatchedException : AreYouHereException(ErrorType.BAD_R
 object NotVerifiedCodeException : AreYouHereException(ErrorType.UNAUTHORIZED, displayMessage = "코드를 먼저 인증해주세요.")
 object AttendeeNotUniqueException : AreYouHereException(ErrorType.RESPONSE_CONFLICT, displayMessage = "중복되는 수강자의 이름의 note를 변경해주세요.")
 object CourseNotFoundException : AreYouHereException(ErrorType.NOT_FOUND, displayMessage = "존재하지 않는 강의입니다.")
+object ActivatedSessionExistsException : AreYouHereException(ErrorType.RESPONSE_CONFLICT, displayMessage = "이미 활성화된 세션이 존재합니다.")
+object AttendeeNotFoundException : AreYouHereException(ErrorType.BAD_REQUEST, displayMessage = "수강 인원이 존재하지 않습니다.")
