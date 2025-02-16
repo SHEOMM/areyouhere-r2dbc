@@ -18,3 +18,8 @@ data class SectionDto(
         updatedAt = section.updatedAt!!,
     )
 }
+
+data class SectionSaveDto(
+    val name: String,
+    val courseId: Long,
+)

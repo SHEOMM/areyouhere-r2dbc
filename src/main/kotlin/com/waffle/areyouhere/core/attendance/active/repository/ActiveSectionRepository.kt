@@ -58,7 +58,7 @@ class SectionSubKeyRepository(
     reactiveRedisConnectionFactory = reactiveRedisConnectionFactory,
     objectMapper = objectMapper,
     defaultExpiry = Duration.ofDays(1),
-    keyPrefix = "active_section",
+    keyPrefix = "active_section_course",
 )
 
 @Component
@@ -69,5 +69,5 @@ class CourseSubKeyRepository(
     reactiveRedisConnectionFactory = reactiveRedisConnectionFactory,
     objectMapper = objectMapper,
     defaultExpiry = Duration.ofDays(1),
-    keyPrefix = "active_section",
+    keyPrefix = "active_section_2",
 )
