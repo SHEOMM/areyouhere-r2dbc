@@ -22,4 +22,6 @@ interface SectionRepository : CoroutineCrudRepository<Section, Long> {
             "ORDER BY date ASC",
     )
     suspend fun findAllWithAttendanceByCourseId(courseId: Long): List<SectionWithAttendance>
+    suspend fun findByIdIn(sectionIds: List<Long>): List<Section>
+    suspend fun deleteByIdIn(sectionIds: List<Long>)
 }

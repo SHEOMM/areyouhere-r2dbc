@@ -37,8 +37,38 @@ class SectionFlowService(
     }
 
     @Transactional(readOnly = true)
-    suspend fun getAll(managerId: Long, courseId: Long): List<SectionWithAttendanceDto> {
+    suspend fun getAllWithAttendance(managerId: Long, courseId: Long): List<SectionWithAttendanceDto> {
         courseService.get(courseId)
         return sectionAttendanceService.getSectionsWithAttendance(courseId)
+    }
+
+    @Transactional(readOnly = true)
+    suspend fun getWithAttendance(managerId: Long, sectionId: Long): SectionWithAttendanceDto {
+        val section = sectionService.get(sectionId)
+        throwIfSectionAuthorizationFail(section.courseId, managerId)
+        return sectionAttendanceService.getSectionWithAttendance(section)
+    }
+
+    @Transactional
+    suspend fun deleteAll(managerId: Long, sectionIds: List<Long>) {
+        sectionService.getByIds(sectionIds)
+            .forEach {
+                throwIfSectionAuthorizationFail(it.courseId, managerId)
+            }
+
+        sectionService.deleteAll(sectionIds)
+    }
+
+    @Transactional
+    suspend fun deleteNotActivated(managerId: Long, courseId: Long) {
+        sectionService.getMostRecent(courseId)?.let {
+            if (activeSectionService.isActivated(it.id).not()) {
+                sectionService.delete(it.id)
+            }
+        }
+    }
+
+    suspend fun throwIfSectionAuthorizationFail(courseId: Long, managerId: Long) {
+        courseService.getWithManagerId(courseId, managerId)
     }
 }
