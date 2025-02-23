@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service
 class AttendanceService(
     private val attendanceRepository: AttendanceRepository,
 ) {
+    suspend fun getAllByAttendeeIdIn(attendanceIds: List<Long>): List<AttendanceDto> {
+        return attendanceRepository.findByAttendeeIdIn(attendanceIds).map { AttendanceDto(it) }
+    }
 
-    suspend fun findBySectionId(sectionId: Long) = attendanceRepository.findBySectionId(sectionId).map { AttendanceDto(it) }
+    suspend fun getBySectionId(sectionId: Long) = attendanceRepository.findBySectionId(sectionId).map { AttendanceDto(it) }
 }

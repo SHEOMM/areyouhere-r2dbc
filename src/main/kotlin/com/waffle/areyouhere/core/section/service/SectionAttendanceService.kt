@@ -15,7 +15,7 @@ class SectionAttendanceService(
     }
 
     suspend fun getSectionWithAttendance(sectionDto: SectionDto): SectionWithAttendanceDto {
-        val attendances = attendanceService.findBySectionId(sectionDto.id)
+        val attendances = attendanceService.getBySectionId(sectionDto.id)
         return SectionWithAttendanceDto(sectionDto, attendances)
     }
 }

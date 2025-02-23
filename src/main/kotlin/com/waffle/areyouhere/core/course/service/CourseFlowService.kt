@@ -2,7 +2,7 @@ package com.waffle.areyouhere.core.course.service
 
 import com.waffle.areyouhere.api.dto.attendee.AttendeeNameAndNote
 import com.waffle.areyouhere.core.attendee.service.AttendeeService
-import com.waffle.areyouhere.core.attendee.service.dto.AttendeeDto
+import com.waffle.areyouhere.core.attendee.service.dto.AttendeeSaveDto
 import com.waffle.areyouhere.core.course.service.dto.CourseAndAttendeesCountDto
 import com.waffle.areyouhere.core.course.service.dto.CourseDto
 import com.waffle.areyouhere.core.course.service.dto.CourseSaveDto
@@ -32,7 +32,7 @@ class CourseFlowService(
 
         val attendees = if (attendeeNameAndNotes.isNotEmpty()) {
             attendeeNameAndNotes.map {
-                AttendeeDto(
+                AttendeeSaveDto(
                     name = it.name,
                     note = it.note,
                     courseId = savedCourse.id,
