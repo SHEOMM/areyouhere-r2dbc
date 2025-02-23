@@ -1,6 +1,6 @@
 package com.waffle.areyouhere.core.attendee.model
 
-import com.waffle.areyouhere.core.attendee.service.dto.AttendeeDto
+import com.waffle.areyouhere.core.attendee.service.dto.AttendeeSaveDto
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.LastModifiedDate
@@ -20,9 +20,9 @@ data class Attendee(
     var updatedAt: Instant? = null,
 ) {
 
-    constructor(attendeeDto: AttendeeDto) : this(
-        name = attendeeDto.name,
-        note = attendeeDto.note,
-        courseId = attendeeDto.courseId,
+    constructor(attendeeSaveDto: AttendeeSaveDto) : this(
+        name = attendeeSaveDto.name,
+        note = attendeeSaveDto.note,
+        courseId = attendeeSaveDto.courseId,
     )
 }

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface AttendeeRepository : CoroutineCrudRepository<Attendee, Long> {
     suspend fun countAttendeesByCourseId(courseId: Long): Long
+    suspend fun findByCourseId(courseId: Long): List<Attendee>
 }
